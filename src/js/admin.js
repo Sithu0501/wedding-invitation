@@ -169,7 +169,8 @@ async function loadData() {
 function renderAll() {
   renderStats();
   renderTable();
-  renderChart();
+  renderGuestCapacityChart();
+  renderMealChart();
   renderMessages();
 }
 
@@ -179,8 +180,8 @@ function renderStats() {
   const attending = allRsvps.filter(r => r.attendance === 'yes');
   const declined = allRsvps.filter(r => r.attendance === 'no');
   const maybe = allRsvps.filter(r => r.attendance === 'maybe');
-  const totalGuests = attending.reduce((sum, r) => sum + (r.guestCount || 1), 0)
-                    + maybe.reduce((sum, r) => sum + (r.guestCount || 1), 0);
+  const confirmedGuests = attending.reduce((sum, r) => sum + (r.guestCount || 1), 0);
+  const totalGuests = confirmedGuests + maybe.reduce((sum, r) => sum + (r.guestCount || 1), 0);
 
   animateNumber('stat-total', total);
   animateNumber('stat-attending', attending.length);
@@ -327,19 +328,120 @@ function sortTable(field) {
   renderTable();
 }
 
-// --- Chart ---
-function renderChart() {
+// --- Chart 1: Guest Capacity (Hall Capacity: 120 Guests) ---
+const HALL_CAPACITY = 120;
+
+function renderGuestCapacityChart() {
+  const attending = allRsvps.filter(r => r.attendance === 'yes');
+  const maybe = allRsvps.filter(r => r.attendance === 'maybe');
+  
+  const confirmedCount = attending.reduce((sum, r) => sum + (r.guestCount || 1), 0);
+  const maybeCount = maybe.reduce((sum, r) => sum + (r.guestCount || 1), 0);
+  const totalCount = confirmedCount + maybeCount;
+  const availableCount = Math.max(0, HALL_CAPACITY - totalCount);
+  const percentFilled = Math.min(100, Math.round((totalCount / HALL_CAPACITY) * 100));
+
+  // Update badge in header
+  const badge = document.getElementById('capacity-badge');
+  if (badge) {
+    badge.textContent = `${totalCount} / ${HALL_CAPACITY} (${percentFilled}%)`;
+  }
+
+  const canvas = document.getElementById('guest-chart');
+  if (!canvas) return;
+
+  const ctx = canvas.getContext('2d');
+  const dpr = window.devicePixelRatio || 1;
+  canvas.width = 240 * dpr;
+  canvas.height = 240 * dpr;
+  ctx.scale(dpr, dpr);
+  canvas.style.width = '240px';
+  canvas.style.height = '240px';
+
+  const cx = 120, cy = 120, radius = 90, innerRadius = 55;
+  ctx.clearRect(0, 0, 240, 240);
+
+  const slices = [
+    { label: 'Confirmed', count: confirmedCount, color: '#2EAD70', icon: '✅' },
+    { label: 'Maybe', count: maybeCount, color: '#D4AF37', icon: '🤔' },
+    { label: 'Available', count: availableCount, color: '#2A3C34', icon: '🪑' },
+  ].filter(s => s.count > 0 || (s.label === 'Available' && totalCount === 0));
+
+  // If no responses at all, show empty hall
+  if (slices.length === 0) {
+    slices.push({ label: 'Available', count: HALL_CAPACITY, color: '#2A3C34', icon: '🪑' });
+  }
+
+  let startAngle = -Math.PI / 2;
+  slices.forEach(slice => {
+    const sliceAngle = (slice.count / HALL_CAPACITY) * Math.PI * 2;
+    const endAngle = startAngle + sliceAngle;
+
+    ctx.beginPath();
+    ctx.arc(cx, cy, radius, startAngle, endAngle);
+    ctx.arc(cx, cy, innerRadius, endAngle, startAngle, true);
+    ctx.closePath();
+    ctx.fillStyle = slice.color;
+    ctx.fill();
+
+    // Subtle slice border
+    ctx.lineWidth = 2;
+    ctx.strokeStyle = '#0F1A15';
+    ctx.stroke();
+
+    startAngle = endAngle;
+  });
+
+  // Center text
+  ctx.fillStyle = '#f0f0f0';
+  ctx.font = '700 24px Inter';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText(totalCount, cx, cy - 8);
+  ctx.fillStyle = '#8E9FA5';
+  ctx.font = '600 10px Inter';
+  ctx.fillText(`/ ${HALL_CAPACITY} GUESTS`, cx, cy + 12);
+
+  // Legend
+  const legendEl = document.getElementById('guest-chart-legend');
+  if (legendEl) {
+    legendEl.innerHTML = [
+      { label: 'Confirmed', count: confirmedCount, color: '#2EAD70', icon: '✅' },
+      { label: 'Maybe', count: maybeCount, color: '#D4AF37', icon: '🤔' },
+      { label: 'Available', count: availableCount, color: '#4A6256', icon: '🪑' },
+    ].map(item => {
+      const pct = Math.round((item.count / HALL_CAPACITY) * 100);
+      return `
+        <div class="legend-item">
+          <span class="legend-dot" style="background: ${item.color}"></span>
+          ${item.icon} ${item.label}: <strong>${item.count}</strong> <span style="opacity:0.7">(${pct}%)</span>
+        </div>
+      `;
+    }).join('');
+  }
+}
+
+// --- Chart 2: Meal Category Breakdown ---
+function renderMealChart() {
   const attending = allRsvps.filter(r => r.attendance !== 'no');
   const allMeals = attending.flatMap(r => r.mealPrefs).filter(m => m);
 
+  const chartArea = document.getElementById('meal-chart-area');
+  const chartEmpty = document.getElementById('chart-empty');
+  const mealsBadge = document.getElementById('meals-badge');
+
+  if (mealsBadge) {
+    mealsBadge.textContent = `${allMeals.length} Meals`;
+  }
+
   if (allMeals.length === 0) {
-    document.getElementById('chart-area').style.display = 'none';
-    document.getElementById('chart-empty').style.display = 'block';
+    if (chartArea) chartArea.style.display = 'none';
+    if (chartEmpty) chartEmpty.style.display = 'block';
     return;
   }
 
-  document.getElementById('chart-area').style.display = 'flex';
-  document.getElementById('chart-empty').style.display = 'none';
+  if (chartArea) chartArea.style.display = 'flex';
+  if (chartEmpty) chartEmpty.style.display = 'none';
 
   // Count meals
   const counts = {};
@@ -367,17 +469,18 @@ function renderChart() {
 
   // Draw donut chart on canvas
   const canvas = document.getElementById('meal-chart');
+  if (!canvas) return;
+
   const ctx = canvas.getContext('2d');
   const dpr = window.devicePixelRatio || 1;
-  canvas.width = 260 * dpr;
-  canvas.height = 260 * dpr;
+  canvas.width = 240 * dpr;
+  canvas.height = 240 * dpr;
   ctx.scale(dpr, dpr);
-  canvas.style.width = '260px';
-  canvas.style.height = '260px';
+  canvas.style.width = '240px';
+  canvas.style.height = '240px';
 
-  const cx = 130, cy = 130, radius = 100, innerRadius = 60;
-
-  ctx.clearRect(0, 0, 260, 260);
+  const cx = 120, cy = 120, radius = 90, innerRadius = 55;
+  ctx.clearRect(0, 0, 240, 240);
 
   let startAngle = -Math.PI / 2;
   labels.forEach((label, i) => {
@@ -391,30 +494,36 @@ function renderChart() {
     ctx.fillStyle = colors[label] || '#888';
     ctx.fill();
 
+    ctx.lineWidth = 2;
+    ctx.strokeStyle = '#0F1A15';
+    ctx.stroke();
+
     startAngle = endAngle;
   });
 
   // Center text
   ctx.fillStyle = '#f0f0f0';
-  ctx.font = '700 28px Inter';
+  ctx.font = '700 24px Inter';
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
   ctx.fillText(total, cx, cy - 8);
-  ctx.fillStyle = '#556677';
-  ctx.font = '500 11px Inter';
-  ctx.fillText('MEALS', cx, cy + 14);
+  ctx.fillStyle = '#8E9FA5';
+  ctx.font = '600 10px Inter';
+  ctx.fillText('MEALS', cx, cy + 12);
 
   // Legend
-  const legendEl = document.getElementById('chart-legend');
-  legendEl.innerHTML = labels.map(label => {
-    const pct = Math.round((counts[label] / total) * 100);
-    return `
-      <div class="legend-item">
-        <span class="legend-dot" style="background: ${colors[label] || '#888'}"></span>
-        ${mealIcons[label] || ''} ${capitalize(label)} (${counts[label]} · ${pct}%)
-      </div>
-    `;
-  }).join('');
+  const legendEl = document.getElementById('meal-chart-legend');
+  if (legendEl) {
+    legendEl.innerHTML = labels.map(label => {
+      const pct = Math.round((counts[label] / total) * 100);
+      return `
+        <div class="legend-item">
+          <span class="legend-dot" style="background: ${colors[label] || '#888'}"></span>
+          ${mealIcons[label] || '🍽️'} ${capitalize(label)}: <strong>${counts[label]}</strong> <span style="opacity:0.7">(${pct}%)</span>
+        </div>
+      `;
+    }).join('');
+  }
 }
 
 // --- Messages ---
@@ -422,6 +531,11 @@ function renderMessages() {
   const withMessages = allRsvps.filter(r => r.personalMessage);
   const container = document.getElementById('messages-list');
   const emptyEl = document.getElementById('messages-empty');
+  const countBadge = document.getElementById('messages-count-badge');
+
+  if (countBadge) {
+    countBadge.textContent = `${withMessages.length} Wishes`;
+  }
 
   if (withMessages.length === 0) {
     container.innerHTML = '';

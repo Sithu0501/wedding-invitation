@@ -88,16 +88,29 @@
       </div>
     </section>
 
-    <!-- Content Grid -->
+    <!-- Content Grid (Two Charts + Messages) -->
     <section class="content-grid">
-      <!-- Meal Chart -->
+      <!-- Chart 1: Guest Capacity (120 Hall Limit) -->
       <div class="panel panel-chart">
         <div class="panel-header">
-          <h2 class="panel-title">Meal Preferences</h2>
+          <h2 class="panel-title">👥 Guest Capacity</h2>
+          <span class="capacity-badge" id="capacity-badge">0 / 120 (0%)</span>
         </div>
-        <div class="chart-area" id="chart-area">
-          <canvas id="meal-chart" width="260" height="260"></canvas>
-          <div class="chart-legend" id="chart-legend"></div>
+        <div class="chart-area" id="guest-chart-area">
+          <canvas id="guest-chart" width="240" height="240"></canvas>
+          <div class="chart-legend" id="guest-chart-legend"></div>
+        </div>
+      </div>
+
+      <!-- Chart 2: Meal Category Breakdown -->
+      <div class="panel panel-chart">
+        <div class="panel-header">
+          <h2 class="panel-title">🍽️ Meal Categories</h2>
+          <span class="capacity-badge" id="meals-badge">0 Meals</span>
+        </div>
+        <div class="chart-area" id="meal-chart-area">
+          <canvas id="meal-chart" width="240" height="240"></canvas>
+          <div class="chart-legend" id="meal-chart-legend"></div>
         </div>
         <div class="chart-empty" id="chart-empty" style="display: none;">
           <span>🍽️</span>
@@ -109,6 +122,7 @@
       <div class="panel panel-messages">
         <div class="panel-header">
           <h2 class="panel-title">💌 Messages from Guests</h2>
+          <span class="capacity-badge" id="messages-count-badge">0 Wishes</span>
         </div>
         <div class="messages-list" id="messages-list">
           <div class="messages-empty" id="messages-empty">

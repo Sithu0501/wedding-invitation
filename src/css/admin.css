@@ -373,12 +373,27 @@ body {
   font-weight: 500;
 }
 
-/* ===== Content Grid ===== */
+/* ===== Content Grid (Two Charts + Messages) ===== */
 .content-grid {
   display: grid;
-  grid-template-columns: 320px 1fr;
+  grid-template-columns: 1fr 1fr 1.15fr;
   gap: 1.5rem;
   margin-bottom: 1.5rem;
+}
+
+@media (max-width: 1150px) {
+  .content-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+  .panel-messages {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 720px) {
+  .content-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 /* ===== Panel ===== */
@@ -387,37 +402,51 @@ body {
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-lg);
   overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
 }
 
 .panel-header {
-  padding: 1.2rem 1.5rem;
+  padding: 1.2rem 1.4rem;
   border-bottom: 1px solid var(--border-subtle);
   display: flex;
   align-items: center;
   justify-content: space-between;
   flex-wrap: wrap;
-  gap: 1rem;
+  gap: 0.8rem;
 }
 
 .panel-title {
   font-family: 'Playfair Display', serif;
-  font-size: 1.05rem;
+  font-size: 1.02rem;
   font-weight: 600;
   color: var(--text-primary);
 }
 
+.capacity-badge {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  background: rgba(212, 175, 55, 0.12);
+  color: var(--gold);
+  border: 1px solid rgba(212, 175, 55, 0.25);
+  letter-spacing: 0.03em;
+}
+
 /* ===== Chart Area ===== */
 .chart-area {
-  padding: 1.5rem;
+  padding: 1.4rem;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1.5rem;
+  gap: 1.2rem;
 }
 
+#guest-chart,
 #meal-chart {
-  max-width: 220px;
-  max-height: 220px;
+  max-width: 210px;
+  max-height: 210px;
 }
 
 .chart-legend {
@@ -425,14 +454,19 @@ body {
   flex-wrap: wrap;
   gap: 0.6rem;
   justify-content: center;
+  width: 100%;
 }
 
 .legend-item {
   display: flex;
   align-items: center;
-  gap: 0.4rem;
+  gap: 0.45rem;
   font-size: 0.78rem;
   color: var(--text-secondary);
+  background: rgba(255, 255, 255, 0.03);
+  padding: 0.35rem 0.65rem;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .legend-dot {
