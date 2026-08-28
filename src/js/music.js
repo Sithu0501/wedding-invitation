@@ -11,9 +11,9 @@ let musicBtn = null;
 
 export function initMusic() {
   // Create the audio element
-  audio = new Audio('/music/perfect.mp3');
+  audio = new Audio('/music/wedding_music.mp3');
   audio.loop = true;
-  audio.volume = 0.4;
+  audio.volume = 0.5;
   audio.preload = 'auto';
 
   // Create the floating music button
@@ -39,7 +39,7 @@ function createMusicButton() {
       </div>
     </div>
     <div class="music-tooltip">
-      <span class="music-title">♫ Perfect — Ed Sheeran</span>
+      <span class="music-title">♫ Wedding Melody · Madhusha & Malshi</span>
     </div>
   `;
 
