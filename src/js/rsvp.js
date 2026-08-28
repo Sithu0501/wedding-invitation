@@ -201,22 +201,22 @@ function buildSummary() {
                     rsvpData.attendance === 'no' ? 'Regretfully Declining' : 'Maybe Attending';
 
   let html = `
-    <div style="font-family: Inter, sans-serif; color: rgba(255,255,255,0.7); font-size: 0.85rem; line-height: 2;">
-      <div style="display: flex; justify-content: space-between; border-bottom: 1px solid rgba(255,255,255,0.06); padding-bottom: 0.5rem; margin-bottom: 0.5rem;">
+    <div style="font-family: 'Inter', sans-serif; color: #555555; font-size: 0.88rem; line-height: 2;">
+      <div style="display: flex; justify-content: space-between; border-bottom: 1px solid rgba(212,175,55,0.2); padding-bottom: 0.5rem; margin-bottom: 0.5rem;">
         <span>Response</span>
-        <span style="color: #D4AF37; font-weight: 500;">${attending}</span>
+        <span style="color: #0D5C3F; font-weight: 600;">${attending}</span>
       </div>
   `;
 
   if (rsvpData.attendance !== 'no') {
     html += `
-      <div style="display: flex; justify-content: space-between; border-bottom: 1px solid rgba(255,255,255,0.06); padding-bottom: 0.5rem; margin-bottom: 0.5rem;">
+      <div style="display: flex; justify-content: space-between; border-bottom: 1px solid rgba(212,175,55,0.2); padding-bottom: 0.5rem; margin-bottom: 0.5rem;">
         <span>Guests</span>
-        <span style="color: #FFFFF0;">${rsvpData.guests.join(', ') || 'N/A'}</span>
+        <span style="color: #2D2D2D; font-weight: 600;">${rsvpData.guests.join(', ') || 'N/A'}</span>
       </div>
       <div style="display: flex; justify-content: space-between;">
         <span>Meals</span>
-        <span style="color: #FFFFF0;">${rsvpData.mealPrefs.filter(m => m).join(', ') || 'N/A'}</span>
+        <span style="color: #2D2D2D; font-weight: 600;">${rsvpData.mealPrefs.filter(m => m).join(', ') || 'N/A'}</span>
       </div>
     `;
   }
