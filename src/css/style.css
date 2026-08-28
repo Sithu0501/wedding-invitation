@@ -96,14 +96,33 @@
   }
 
   .landing-names {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.1rem;
+    margin-bottom: 1.4rem;
+  }
+
+  .landing-name {
     font-family: 'Playfair Display', Georgia, serif;
-    font-size: clamp(2.5rem, 6.5vw, 4.5rem);
-    font-weight: 600;
-    color: #FFFFF0;
-    line-height: 1.18;
-    margin-bottom: 1.2rem;
-    letter-spacing: -0.01em;
-    text-shadow: 0 4px 25px rgba(0, 0, 0, 0.6);
+    font-size: clamp(2.8rem, 8vw, 5rem);
+    font-weight: 700;
+    line-height: 1.1;
+    background: linear-gradient(135deg, #FFFFF0 0%, #F5E6A3 45%, #D4AF37 80%, #FFE699 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 4px 15px rgba(0, 0, 0, 0.6));
+    letter-spacing: 0.02em;
+  }
+
+  .landing-ampersand {
+    font-family: 'Great Vibes', cursive;
+    color: #FFD14D;
+    font-size: clamp(2.4rem, 7vw, 4.2rem);
+    line-height: 0.9;
+    text-shadow: 0 0 25px rgba(212, 175, 55, 0.7);
+    margin: 0.15rem 0;
   }
 
   .landing-date {
