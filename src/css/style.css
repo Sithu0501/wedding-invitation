@@ -1657,3 +1657,109 @@
     display: none;
   }
 }
+
+/* ===== Auto Scroll Floating Button ===== */
+.autoscroll-toggle {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  z-index: 9999;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.75rem 1.4rem;
+  border-radius: 9999px;
+  border: 1px solid rgba(212, 175, 55, 0.4);
+  background: linear-gradient(135deg, rgba(13, 92, 63, 0.95), rgba(7, 31, 20, 0.95));
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  color: #FDF8F0;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  box-shadow: 
+    0 8px 30px rgba(0, 0, 0, 0.25),
+    0 0 0 1px rgba(212, 175, 55, 0.3),
+    0 0 15px rgba(212, 175, 55, 0.15);
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  outline: none;
+  opacity: 0;
+  transform: scale(0.6);
+}
+
+.autoscroll-toggle:hover {
+  transform: translateY(-3px) scale(1.04);
+  box-shadow: 
+    0 12px 36px rgba(0, 0, 0, 0.3),
+    0 0 0 1px rgba(212, 175, 55, 0.6),
+    0 0 25px rgba(212, 175, 55, 0.35);
+  border-color: #D4AF37;
+}
+
+.autoscroll-toggle:active {
+  transform: scale(0.96);
+}
+
+.autoscroll-toggle .autoscroll-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #D4AF37;
+  transition: transform 0.3s ease;
+}
+
+.autoscroll-toggle:hover .autoscroll-icon {
+  transform: scale(1.15);
+}
+
+.autoscroll-toggle.scrolling {
+  background: linear-gradient(135deg, #D4AF37, #E5C358);
+  color: #071f14;
+  border-color: #FDF8F0;
+  box-shadow: 
+    0 8px 30px rgba(212, 175, 55, 0.4),
+    0 0 0 3px rgba(212, 175, 55, 0.25);
+  animation: scrollPulse 2s ease-in-out infinite;
+}
+
+.autoscroll-toggle.scrolling .autoscroll-icon {
+  color: #071f14;
+}
+
+@keyframes scrollPulse {
+  0%, 100% {
+    box-shadow:
+      0 8px 30px rgba(212, 175, 55, 0.4),
+      0 0 0 0 rgba(212, 175, 55, 0.4);
+  }
+  50% {
+    box-shadow:
+      0 8px 30px rgba(212, 175, 55, 0.4),
+      0 0 0 10px rgba(212, 175, 55, 0);
+  }
+}
+
+@keyframes scrollBtnAppear {
+  0% {
+    opacity: 0;
+    transform: scale(0.5) translateY(20px);
+  }
+  60% {
+    transform: scale(1.1) translateY(-4px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@media (max-width: 768px) {
+  .autoscroll-toggle {
+    bottom: 1.2rem;
+    right: 1.2rem;
+    padding: 0.65rem 1.1rem;
+    font-size: 0.78rem;
+  }
+}
