@@ -13,7 +13,6 @@ import { initCountdown } from './countdown.js';
 import { initRSVP } from './rsvp.js';
 import { initMap } from './map.js';
 import { initMusic } from './music.js';
-import { initAutoScroll } from './autoscroll.js';
 
 // ===== DOM Ready =====
 document.addEventListener('DOMContentLoaded', () => {
@@ -31,7 +30,6 @@ document.addEventListener('DOMContentLoaded', () => {
   initRSVP();
   initMap();
   initMusic();
-  initAutoScroll();
 
   // Navigation & Hero effects
   initNavigation();
