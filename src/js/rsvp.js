@@ -1,8 +1,11 @@
 /**
  * Multi-step RSVP form
  * 5 steps: Attendance → Guest Names → Meal Prefs → Hotel → Confirm
- * Data persisted to localStorage
+ * Data persisted to localStorage + Firebase Firestore
  */
+
+import { getDb, isFirebaseConfigured } from './firebase.js';
+import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 
 let rsvpData = {
   attendance: '',
@@ -222,9 +225,12 @@ function buildSummary() {
   summary.innerHTML = html;
 }
 
-function submitRSVP() {
+async function submitRSVP() {
   rsvpData.personalMessage = document.getElementById('personal-message').value.trim();
   saveData();
+
+  // Save to Firebase Firestore (cloud)
+  await saveToFirestore();
 
   // Hide all steps, show success
   document.querySelectorAll('.rsvp-step').forEach(s => s.classList.remove('active'));
@@ -237,6 +243,32 @@ function submitRSVP() {
 
 function saveData() {
   localStorage.setItem('wedding-rsvp-madhusha-malshi', JSON.stringify(rsvpData));
+}
+
+async function saveToFirestore() {
+  if (!isFirebaseConfigured()) {
+    console.warn('Firebase not configured — RSVP saved locally only.');
+    return;
+  }
+
+  try {
+    const db = getDb();
+    if (!db) return;
+
+    await addDoc(collection(db, 'rsvps'), {
+      attendance: rsvpData.attendance,
+      guestCount: rsvpData.guestCount,
+      guests: rsvpData.guests,
+      mealPrefs: rsvpData.mealPrefs,
+      dietaryNotes: rsvpData.dietaryNotes,
+      personalMessage: rsvpData.personalMessage,
+      submittedAt: serverTimestamp(),
+      submittedAtLocal: new Date().toISOString(),
+    });
+    console.log('✅ RSVP saved to cloud!');
+  } catch (err) {
+    console.error('Failed to save RSVP to cloud:', err);
+  }
 }
 
 function shakeElement(el) {

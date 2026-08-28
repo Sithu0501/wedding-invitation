@@ -12,6 +12,7 @@ import { initEnvelope } from './envelope.js';
 import { initCountdown } from './countdown.js';
 import { initRSVP } from './rsvp.js';
 import { initMap } from './map.js';
+import { initMusic } from './music.js';
 
 // ===== DOM Ready =====
 document.addEventListener('DOMContentLoaded', () => {
@@ -28,6 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initCountdown();
   initRSVP();
   initMap();
+  initMusic();
 
   // Navigation & Hero effects
   initNavigation();
