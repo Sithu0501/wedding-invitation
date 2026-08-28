@@ -25,11 +25,10 @@ An interactive, luxury digital wedding invitation and real-time RSVP management 
 
 ### 🛡️ Admin Dashboard (`admin.html`)
 - **🔒 Password Protection**: Secure login modal protecting guest data.
-- **📊 Real-time Analytics**:
-  - Total RSVPs count
-  - Attending / Declined / Maybe breakdown
-  - Total confirmed guest count
-  - Interactive Meal Preference Donut Chart (powered by Chart.js)
+- **📊 Real-time Analytics & Dual Pie Charts**:
+  - **👥 Guest Capacity Chart (120 Hall Limit)**: Live pie chart tracking Confirmed Guests, Maybe, and Remaining Available Seats out of the 120-guest hall limit.
+  - **🍽️ Meal Categories Chart**: Live breakdown of Chicken, Fish, Vegetarian, and Vegan preferences with exact counts & percentages.
+  - Summary metrics for Total RSVPs, Attending, Declined, Maybe, and Total Guests.
 - **💬 Guest Messages Feed**: Live stream of heartfelt wishes left by guests.
 - **📋 Guest Data Table**:
   - Filter by attendance status (All, Attending, Declined, Maybe)
