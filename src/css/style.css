@@ -57,7 +57,7 @@
 /* ===== Component Styles ===== */
 @layer components {
 
-  /* --- Clean Invitation Landing Overlay --- */
+  /* --- Clean Invitation Landing Overlay (Emerald & Gold Theme) --- */
   .envelope-overlay {
     position: fixed;
     inset: 0;
@@ -65,11 +65,11 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: #FAF7F0;
+    background: #051a11;
     padding: 2rem 1.5rem;
     cursor: default;
     background-image: 
-      radial-gradient(ellipse at 50% 45%, #FFFFFF 0%, #FAF7F0 75%, #F3EFE6 100%);
+      radial-gradient(ellipse at 50% 40%, rgba(13, 92, 63, 0.5) 0%, rgba(8, 36, 24, 0.85) 55%, #04130c 100%);
   }
 
   .landing-card {
@@ -80,73 +80,80 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 2rem 1rem;
+    padding: 3rem 1.5rem;
+    position: relative;
   }
 
   .landing-subtitle {
     font-family: 'Inter', system-ui, sans-serif;
-    font-size: 0.85rem;
-    font-weight: 500;
-    letter-spacing: 0.32em;
+    font-size: 0.82rem;
+    font-weight: 600;
+    letter-spacing: 0.35em;
     text-transform: uppercase;
-    color: #5D6B4E;
+    color: #D4AF37;
     margin-bottom: 1.4rem;
+    text-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
   }
 
   .landing-names {
     font-family: 'Playfair Display', Georgia, serif;
-    font-size: clamp(2.4rem, 6vw, 4.4rem);
-    font-weight: 500;
-    color: #37482D;
+    font-size: clamp(2.5rem, 6.5vw, 4.5rem);
+    font-weight: 600;
+    color: #FFFFF0;
     line-height: 1.18;
     margin-bottom: 1.2rem;
     letter-spacing: -0.01em;
+    text-shadow: 0 4px 25px rgba(0, 0, 0, 0.6);
   }
 
   .landing-date {
     font-family: 'Inter', system-ui, sans-serif;
-    font-size: 0.95rem;
+    font-size: 1rem;
     font-weight: 400;
-    color: #5D6B4E;
-    letter-spacing: 0.06em;
-    margin-bottom: 1.5rem;
+    color: rgba(245, 230, 163, 0.9);
+    letter-spacing: 0.08em;
+    margin-bottom: 1.6rem;
   }
 
   .landing-divider {
-    width: 60px;
-    height: 1px;
-    background: rgba(93, 107, 78, 0.4);
-    margin: 0 auto 2.4rem;
+    width: 70px;
+    height: 1.5px;
+    background: linear-gradient(90deg, transparent, #D4AF37, transparent);
+    margin: 0 auto 2.5rem;
+    opacity: 0.8;
   }
 
   .btn-open-invitation {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    padding: 1.1rem 3.2rem;
-    background: #4A5836;
-    color: #FFFFFF;
+    padding: 1.1rem 3.4rem;
+    background: linear-gradient(135deg, #D4AF37 0%, #F5E6A3 50%, #B8962E 100%);
+    color: #071f14;
     font-family: 'Inter', system-ui, sans-serif;
-    font-size: 0.82rem;
-    font-weight: 600;
-    letter-spacing: 0.18em;
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
     text-transform: uppercase;
     border: none;
     border-radius: 9999px;
     cursor: pointer;
-    box-shadow: 0 12px 32px rgba(74, 88, 54, 0.38);
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 
+      0 12px 35px rgba(212, 175, 55, 0.35),
+      0 0 25px rgba(212, 175, 55, 0.2);
+    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   .btn-open-invitation:hover {
-    background: #3B472A;
-    transform: translateY(-2px);
-    box-shadow: 0 16px 40px rgba(74, 88, 54, 0.48);
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 
+      0 16px 45px rgba(212, 175, 55, 0.5),
+      0 0 35px rgba(245, 230, 163, 0.4);
   }
 
   .btn-open-invitation:active {
-    transform: translateY(0);
-    box-shadow: 0 6px 18px rgba(74, 88, 54, 0.3);
+    transform: translateY(0) scale(0.99);
+    box-shadow: 0 6px 20px rgba(212, 175, 55, 0.3);
   }
 
   .particle {
