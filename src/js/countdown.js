@@ -4,7 +4,7 @@
  * Auto-switches to celebration message on the day
  */
 
-const WEDDING_DATE = new Date('2026-11-19T16:00:00+05:30');
+const WEDDING_DATE = new Date('2026-11-19T17:00:00+05:30');
 
 export function initCountdown() {
   const daysEl = document.getElementById('countdown-days');
