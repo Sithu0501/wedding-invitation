@@ -81,8 +81,18 @@ function showMusicButton() {
   musicBtn.style.animation = 'musicBtnAppear 0.6s ease-out forwards';
 }
 
+const START_TIME = 15; // Start playback at 15 seconds
+let hasSetStartTime = false;
+
 function playMusic() {
   if (!audio) return;
+
+  if (!hasSetStartTime) {
+    try {
+      audio.currentTime = START_TIME;
+    } catch (e) {}
+    hasSetStartTime = true;
+  }
 
   const playPromise = audio.play();
   if (playPromise !== undefined) {
